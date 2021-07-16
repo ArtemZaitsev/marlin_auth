@@ -123,3 +123,37 @@ function login($email, $password) {
     $result = password_verify($password, $password_from_db);
     return $result;
 }
+
+
+/**
+set_user_in_session_by_email
+
+Parameters: string - email.
+Description: записать данные пользователя в сессию.
+Return value: null.
+ */
+
+function set_user_in_session_by_email($email) {
+    //получаем по email все данные пользователя  в виде ассоциативного массива из базы и помещаем его в переменную
+    $user_from_db = get_user_by_email($email);
+
+    //получаем id из базы данных и помещаем его в переменную
+    $user_id = $user_from_db['id'];
+
+    //записывает user_id и email в глобальный массив SESSION
+    $_SESSION['user_id'] = $user_id;
+    $_SESSION['user_email'] = $email;
+}
+
+/**
+unset_user_in_session
+
+Parameters: хранятся в сессии.
+Description: удалить данные пользователя из сессии.
+Return value: null.
+ */
+function unset_user_in_session() {
+    //удаляю "ключ-значение" в глобально массиве SESSION по ключу с использованием стандарной фукнции "unset"
+    unset($_SESSION['user_id']);
+    unset($_SESSION['user_email']);
+}
